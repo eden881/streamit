@@ -15,8 +15,7 @@ import Settings from "./pages/Settings";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
-const { REACT_APP_SPOTIFY_CLIENT_ID, REACT_APP_SPOTIFY_CLIENT_SECRET } =
-  process.env;
+const { REACT_APP_SPOTIFY_CLIENT_ID } = process.env;
 const spotifyCode = new URLSearchParams(window.location.search).get("code");
 const spotifyApi = new SpotifyWebApi({
   clientId: REACT_APP_SPOTIFY_CLIENT_ID,
