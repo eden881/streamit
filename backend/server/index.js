@@ -3,6 +3,8 @@ const express = require("express");
 const request = require("request");
 const dotenv = require("dotenv");
 const path = require("path");
+const session = require("express-session");
+const MemoryStore = require("memorystore")(session);
 
 // Basic configuration
 const port = 5000;
@@ -11,7 +13,6 @@ dotenv.config();
 const spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
 const spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 const spotify_redirect_uri = process.env.SPOTIFY_CALLBACK_URI;
-var access_token = "";
 
 const app = express();
 
@@ -25,6 +26,18 @@ const generateRandomString = function (length) {
 
   return randomText;
 };
+
+// Set up sessions
+app.use(
+  session({
+    cookie: { maxAge: 3600000 },
+    store: new MemoryStore({
+      checkPeriod: 3600000,
+    }),
+    resave: false,
+    secret: generateRandomString(32),
+  })
+);
 
 /**
  * Routes
@@ -64,15 +77,15 @@ app.get("/auth/callback", (req, res) => {
 
   request.post(authOptions, function (error, response, body) {
     if (!error && response.statusCode === 200) {
-      access_token = body.access_token;
-      res.redirect("/");
+      req.session.access_token = body.access_token;
+      res.redirect("/browse");
     }
   });
 });
 
 app.get("/auth/token", (req, res) => {
   res.json({
-    access_token: access_token,
+    access_token: req.session.access_token,
   });
 });
 
