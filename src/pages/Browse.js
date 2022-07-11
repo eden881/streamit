@@ -15,7 +15,7 @@ function Browse(props) {
 
   useEffect(() => {
     async function getToken() {
-      const response = await fetch(`${process.env.BACKEND_URI}/auth/token`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URI}/auth/token`);
       const json = await response.json();
       setToken(json.access_token);
     }
