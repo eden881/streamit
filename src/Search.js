@@ -13,7 +13,7 @@ function Search(props) {
       method: "PUT",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${props.token}` },
       body: JSON.stringify(itemUri.startsWith("spotify:track") ? { uris: [itemUri] } : { context_uri: itemUri }),
-    }).then((res) => console.log(res));
+    });
   }
 
   return (

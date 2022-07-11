@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Form } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 
 import Search from "../Search";
 import WebPlayback from "../player/WebPlayback";
@@ -8,6 +8,10 @@ import Login from "../player/Login";
 function Browse(props) {
   const [token, setToken] = useState("");
   const [deviceId, setDeviceId] = useState("");
+
+  function newDeviceId(id) {
+    setDeviceId(id);
+  }
 
   useEffect(() => {
     async function getToken() {
@@ -32,11 +36,7 @@ function Browse(props) {
       ) : (
         <React.Fragment>
           <Row>
-            <WebPlayback
-              token={token}
-              appName={props.appName}
-              onChangedDeviceId={(newDeviceId) => setDeviceId(newDeviceId)}
-            />
+            <WebPlayback token={token} appName={props.appName} onChangedDeviceId={newDeviceId} />
           </Row>
           <Row>
             <Search token={token} deviceId={deviceId} />

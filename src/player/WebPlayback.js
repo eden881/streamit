@@ -14,10 +14,17 @@ function WebPlayback(props) {
   const [is_active, setActive] = useState(false);
   const [player, setPlayer] = useState(undefined);
   const [current_track, setTrack] = useState(track);
+  const [deviceId, setDeviceId] = useState("");
 
-  function publishDeviceId(deviceId) {
+  const { onChangedDeviceId } = props;
+
+  /**function publishDeviceId(deviceId) {
     props.onChangedDeviceId(deviceId);
-  }
+  }*/
+
+  useEffect(() => {
+    onChangedDeviceId(deviceId);
+  }, [deviceId, onChangedDeviceId]);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -39,7 +46,7 @@ function WebPlayback(props) {
 
       player.addListener("ready", ({ device_id }) => {
         console.log("Ready with Device ID", device_id);
-        publishDeviceId(device_id);
+        setDeviceId(device_id);
       });
 
       player.addListener("not_ready", ({ device_id }) => {
@@ -69,7 +76,7 @@ function WebPlayback(props) {
         player.disconnect();
       };
     };
-  }, []);
+  }, [props.appName, props.token]);
 
   if (!is_active) {
     return <React.Fragment></React.Fragment>;
