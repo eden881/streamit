@@ -9,7 +9,7 @@ function Login() {
           <p>Spotify account is not connected. Please login.</p>
           <hr />
           <div className="d-flex justify-content-end">
-            <Button variant="outline-success" href="/auth/login">
+            <Button variant="outline-success" href={`${process.env.BACKEND_URI}/auth/login`}>
               Login with Spotify
             </Button>
           </div>
