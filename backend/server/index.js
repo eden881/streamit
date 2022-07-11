@@ -2,6 +2,7 @@
 const express = require("express");
 const request = require("request");
 const dotenv = require("dotenv");
+const path = require("path");
 
 // Basic configuration
 const port = 5000;
@@ -9,7 +10,7 @@ dotenv.config();
 
 const spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
 const spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-const spotify_redirect_uri = "http://localhost:3000/auth/callback";
+const spotify_redirect_uri = process.env.SPOTIFY_CALLBACK_URI;
 var access_token = "";
 
 const app = express();
@@ -28,6 +29,7 @@ const generateRandomString = function (length) {
 /**
  * Routes
  */
+
 app.get("/auth/login", (req, res) => {
   const scope = "streaming user-read-email user-read-private";
   const state = generateRandomString(16);
@@ -72,6 +74,17 @@ app.get("/auth/token", (req, res) => {
   res.json({
     access_token: access_token,
   });
+});
+
+/**
+ * Fall back to React frontend
+ */
+
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, "../../frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/../../frontend/build/index.html"));
 });
 
 app.listen(process.env.PORT || port, () => {
