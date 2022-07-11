@@ -1,32 +1,26 @@
 import React from "react";
-import { Row, Alert } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Row, Image } from "react-bootstrap";
 
 class Home extends React.Component {
-  apiAlert() {
-    if (this.props.apiKey)
-      return <Alert variant="success">Your API key is set up &#x1F389;</Alert>;
-    return (
-      <Alert variant="danger">
-        Please set up your API key in the <Link to={"settings"}>settings</Link>!
-      </Alert>
-    );
-  }
-
   render() {
     return (
       <React.Fragment>
         <Row>
-          <h1 className="mt-2 mt-sm-5">Welcome, human.</h1>
+          <h1 className="mt-2 mt-md-3">Home</h1>
         </Row>
         <Row>
           <p>Are you ready to stream some music?</p>
           <p>
-            You just need to provide your Spotify API key, and then you'll be
-            ready to enjoy all of your favorite tunes! &#x1F3B6;
+            You just need to provide your Spotify API key, and then you'll be ready to enjoy all of your favorite tunes!
+            &#x1F3B6;
           </p>
         </Row>
-        <Row>{this.apiAlert()}</Row>
+        <Image
+          alt="Spotify logo"
+          src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png"
+          className="mx-auto d-block mt-4"
+          width={400}
+        />
       </React.Fragment>
     );
   }

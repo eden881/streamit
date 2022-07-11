@@ -1,15 +1,11 @@
 import React from "react";
-
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-
+import { Container, Nav, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
 class MainNavbar extends React.Component {
   render() {
     return (
-      <Navbar bg="dark" variant="dark" expand="sm">
+      <Navbar bg="dark" variant="dark" expand="md">
         <Container>
           <Navbar.Brand>{this.props.appName}</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -20,9 +16,6 @@ class MainNavbar extends React.Component {
               </LinkContainer>
               <LinkContainer to="browse">
                 <Nav.Link>Browse</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="settings">
-                <Nav.Link>Settings</Nav.Link>
               </LinkContainer>
               <LinkContainer to="about">
                 <Nav.Link>About</Nav.Link>
