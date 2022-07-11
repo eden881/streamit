@@ -29,7 +29,7 @@ function Browse(props) {
         <h1 className="mt-2 mt-md-3">Browse</h1>
       </Row>
 
-      {typeof token === "undefined" ? (
+      {token === "" ? (
         <Row>
           <Login />
         </Row>
