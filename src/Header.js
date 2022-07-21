@@ -1,8 +1,6 @@
 import React from "react";
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-
-import { getCookie } from "./App";
 
 class MainNavbar extends React.Component {
   render() {
@@ -22,18 +20,6 @@ class MainNavbar extends React.Component {
               <LinkContainer to="about">
                 <Nav.Link>About</Nav.Link>
               </LinkContainer>
-              <NavDropdown title="DEBUG">
-                <NavDropdown.Item onClick={() => console.log(document.cookie)}>Log all cookies</NavDropdown.Item>
-                <NavDropdown.Item
-                  onClick={() => {
-                    document.cookie.split("; ").forEach((cookie) => {
-                      document.cookie = `${cookie.split("=")[0]}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-                    });
-                  }}
-                >
-                  Force clean all cookies
-                </NavDropdown.Item>
-              </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Container>
