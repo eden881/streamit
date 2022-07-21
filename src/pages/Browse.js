@@ -80,7 +80,14 @@ function Browse() {
                 onClick={() => {
                   fetch(`${process.env.REACT_APP_BACKEND_URI}/api/songs`)
                     .then((res) => res.json())
-                    .then((json) => setSearchResults(json));
+                    .then((json) =>
+                      setSearchResults(
+                        json
+                          .map((value) => ({ value, sort: Math.random() }))
+                          .sort((a, b) => a.sort - b.sort)
+                          .map(({ value }) => value)
+                      )
+                    );
                 }}
               >
                 Search
