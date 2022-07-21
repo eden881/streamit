@@ -8,6 +8,13 @@ import Browse from "./pages/Browse";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
+export function getCookie(name) {
+  return document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(name))
+    ?.split("=")[1];
+}
+
 class App extends React.Component {
   render() {
     return (

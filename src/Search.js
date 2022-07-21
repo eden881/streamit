@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 
 import ResultCard from "./ResultCard";
+import { getCookie } from "./App";
 
-function Search(props) {
+function Search() {
   const [searchType, setSearchType] = useState("track");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
   function handleItemSelection(itemUri) {
-    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${props.deviceId}`, {
+    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${getCookie("deviceId")}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${props.token}` },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${getCookie("token")}` },
       body: JSON.stringify(itemUri.startsWith("spotify:track") ? { uris: [itemUri] } : { context_uri: itemUri }),
     });
   }
@@ -40,7 +41,7 @@ function Search(props) {
               variant="success"
               onClick={() => {
                 fetch(`https://api.spotify.com/v1/search?q=${searchQuery}&type=${searchType}`, {
-                  headers: { "Content-Type": "application/json", Authorization: `Bearer ${props.token}` },
+                  headers: { "Content-Type": "application/json", Authorization: `Bearer ${getCookie("token")}` },
                 })
                   .then((res) => res.json())
                   .then((json) => setSearchResults(json[`${searchType}s`].items));

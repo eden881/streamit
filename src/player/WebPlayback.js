@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Button, Image } from "react-bootstrap";
 
+import { getCookie } from "../App";
+
 const track = {
   name: "",
   album: {
@@ -14,17 +16,6 @@ function WebPlayback(props) {
   const [is_active, setActive] = useState(false);
   const [player, setPlayer] = useState(undefined);
   const [current_track, setTrack] = useState(track);
-  const [deviceId, setDeviceId] = useState("");
-
-  const { onChangedDeviceId } = props;
-
-  /**function publishDeviceId(deviceId) {
-    props.onChangedDeviceId(deviceId);
-  }*/
-
-  useEffect(() => {
-    onChangedDeviceId(deviceId);
-  }, [deviceId, onChangedDeviceId]);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -34,26 +25,27 @@ function WebPlayback(props) {
     document.body.appendChild(script);
 
     window.onSpotifyWebPlaybackSDKReady = () => {
-      const player = new window.Spotify.Player({
+      const newPlayer = new window.Spotify.Player({
         name: props.appName,
-        getOAuthToken: (cb) => {
-          cb(props.token);
+        getOAuthToken: (callback) => {
+          callback(getCookie("token"));
         },
         volume: 0.5,
       });
 
-      setPlayer(player);
+      setPlayer(newPlayer);
 
-      player.addListener("ready", ({ device_id }) => {
+      newPlayer.addListener("ready", ({ device_id }) => {
         console.log("Ready with Device ID", device_id);
-        setDeviceId(device_id);
+        document.cookie = `deviceId=${device_id}; path=/`;
       });
 
-      player.addListener("not_ready", ({ device_id }) => {
+      newPlayer.addListener("not_ready", ({ device_id }) => {
         console.log("Device ID has gone offline", device_id);
+        document.cookie = `deviceId=${device_id}; path=/; expires=0`;
       });
 
-      player.addListener("player_state_changed", (state) => {
+      newPlayer.addListener("player_state_changed", (state) => {
         if (!state) {
           return;
         }
@@ -61,22 +53,14 @@ function WebPlayback(props) {
         setTrack(state.track_window.current_track);
         setPaused(state.paused);
 
-        player.getCurrentState().then((state) => {
-          !state ? setActive(false) : setActive(true);
+        newPlayer.getCurrentState().then((newState) => {
+          !newState ? setActive(false) : setActive(true);
         });
       });
 
-      player.connect();
-
-      return () => {
-        console.log("Unmounting player");
-        player.removeListener("ready");
-        player.removeListener("not_ready");
-        player.removeListener("player_state_changed");
-        player.disconnect();
-      };
+      newPlayer.connect();
     };
-  }, [props.appName, props.token]);
+  }, [props.appName]);
 
   if (!is_active) {
     return <React.Fragment></React.Fragment>;
