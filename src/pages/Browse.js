@@ -68,16 +68,18 @@ function Browse() {
                 </Button>
               </Container>
             </Row>
-            <Row className="mb-3">
-              <Container style={{ width: "50%" }}>
-                <ProgressBar now={currentProgress} />
-              </Container>
-            </Row>
-            <Row className="mb-3">
-              <Container style={{ width: "30%" }}>
-                <Form.Range />
-              </Container>
-            </Row>
+            <Container>
+              <Row className="mb-3 justify-content-center">
+                <Col sm={8}>
+                  <ProgressBar now={currentProgress} />
+                </Col>
+              </Row>
+              <Row className="mb-3 justify-content-center">
+                <Col xs={10} sm={6}>
+                  <Form.Range />
+                </Col>
+              </Row>
+            </Container>
           </Container>
         </Row>
       ) : null}
