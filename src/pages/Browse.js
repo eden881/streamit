@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Form, Button, Container, Image } from "react-bootstrap";
+import { Row, Col, Form, Button, Container, Image, ProgressBar } from "react-bootstrap";
 
 import ResultCard from "../ResultCard";
 
@@ -8,6 +8,7 @@ function Browse() {
   const [selectedSongId, setSelectedSongId] = useState(0);
   const [audio, setAudio] = useState(new Audio());
   const [isPaused, setIsPaused] = useState(true);
+  const [currentProgress, setCurrentProgress] = useState(0);
 
   const selectedSong = searchResults.find((song) => song.id === selectedSongId);
 
@@ -25,6 +26,8 @@ function Browse() {
   useEffect(() => {
     if (audio.src) {
       setIsPaused(false);
+      setCurrentProgress(0);
+      audio.addEventListener("timeupdate", () => setCurrentProgress((audio.currentTime / audio.duration) * 100));
     }
   }, [audio]);
 
@@ -55,7 +58,7 @@ function Browse() {
                 <strong>From:</strong> {selectedSong.album}
               </p>
             </Row>
-            <Row className="mb-3">
+            <Row className="mb-4">
               <Container>
                 <Button className="rounded-circle" onClick={() => setIsPaused(!isPaused)}>
                   {isPaused ? "\u25B6" : "\u23F8"}
@@ -63,6 +66,16 @@ function Browse() {
                 <Button className="rounded-circle" onClick={() => setSelectedSongId(0)}>
                   &#x274C;
                 </Button>
+              </Container>
+            </Row>
+            <Row className="mb-3">
+              <Container style={{ width: "50%" }}>
+                <ProgressBar now={currentProgress} />
+              </Container>
+            </Row>
+            <Row className="mb-3">
+              <Container style={{ width: "30%" }}>
+                <Form.Range />
               </Container>
             </Row>
           </Container>
