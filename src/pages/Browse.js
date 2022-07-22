@@ -7,6 +7,7 @@ function Browse() {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedSongId, setSelectedSongId] = useState(0);
   const [audio, setAudio] = useState(new Audio());
+  const [volume, setVolume] = useState(0.5);
   const [isPaused, setIsPaused] = useState(true);
   const [currentProgress, setCurrentProgress] = useState(0);
 
@@ -24,9 +25,14 @@ function Browse() {
   }, [selectedSong]);
 
   useEffect(() => {
+    audio.volume = volume;
+  }, [volume]);
+
+  useEffect(() => {
     if (audio.src) {
       setIsPaused(false);
       setCurrentProgress(0);
+      setVolume(0.5);
       audio.addEventListener("timeupdate", () => setCurrentProgress((audio.currentTime / audio.duration) * 100));
     }
   }, [audio]);
@@ -76,7 +82,7 @@ function Browse() {
               </Row>
               <Row className="mb-3 justify-content-center">
                 <Col xs={10} sm={6}>
-                  <Form.Range />
+                  <Form.Range onChange={(event) => setVolume(event.target.value / 100)} />
                 </Col>
               </Row>
             </Container>
