@@ -1,4 +1,4 @@
 [submodule "server"]
 	path = server
 	url = https://github.com/eden881/streamit-backend.git
-	branch = codesandbox
+	branch = master
