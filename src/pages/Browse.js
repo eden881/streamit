@@ -13,6 +13,28 @@ function Browse() {
 
   const selectedSong = searchResults.find((song) => song.id === selectedSongId);
 
+  function searchSongs(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const term = document.getElementById("searchBar").value.toLowerCase();
+    fetch(`${process.env.REACT_APP_BACKEND_URI}/api/songs`)
+      .then((res) => res.json())
+      .then((songs) =>
+        setSearchResults(
+          songs
+            .filter(
+              (song) =>
+                song.title.toLowerCase().includes(term) ||
+                song.artist.toLowerCase().includes(term) ||
+                song.album.toLowerCase().includes(term)
+            )
+            .map((value) => ({ value, sort: Math.random() }))
+            .sort((a, b) => a.sort - b.sort)
+            .map(({ value }) => value)
+        )
+      );
+  }
+
   useEffect(() => {
     isPaused ? audio.pause() : audio.play();
   }, [isPaused]);
@@ -90,29 +112,13 @@ function Browse() {
         </Row>
       ) : null}
       <Row>
-        <Form>
+        <Form onSubmit={searchSongs}>
           <Row>
             <Col sm={10}>
-              <Form.Control type="search" placeholder={"Search tracks on Spotify"} />
+              <Form.Control id="searchBar" type="search" placeholder={"Search tracks on Spotify"} />
             </Col>
             <Col sm={2} className="mt-2 mt-sm-0">
-              <Button
-                variant="success"
-                onClick={() => {
-                  fetch(`${process.env.REACT_APP_BACKEND_URI}/api/songs`)
-                    .then((res) => res.json())
-                    .then((json) =>
-                      setSearchResults(
-                        json
-                          .map((value) => ({ value, sort: Math.random() }))
-                          .sort((a, b) => a.sort - b.sort)
-                          .map(({ value }) => value)
-                      )
-                    );
-                }}
-              >
-                Search
-              </Button>
+              <Button as="input" type="submit" variant="success" value="Search" />
             </Col>
           </Row>
         </Form>
