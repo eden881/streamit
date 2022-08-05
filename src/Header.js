@@ -5,7 +5,7 @@ import { LinkContainer } from "react-router-bootstrap";
 class MainNavbar extends React.Component {
   render() {
     return (
-      <Navbar bg="dark" variant="dark" expand="md">
+      <Navbar collapseOnSelect bg="dark" variant="dark" expand="md">
         <Container>
           <Navbar.Brand>{this.props.appName}</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
