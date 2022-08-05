@@ -12,9 +12,11 @@
     "react-scripts": "5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "devStart": "react-scripts start",
     "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "client": "npm run build && npx serve -s build",
+    "server": "cd server && npm install && npm run prodStart"
   },
   "browserslist": {
     "production": [
@@ -27,5 +29,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^7.3.0"
   }
 }
