@@ -13,10 +13,12 @@
   },
   "scripts": {
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "devStart": "react-scripts start",
+    "devStart": "concurrently --kill-others-on-fail \"npm run devServer\" \"npm run devClient\"",
     "build": "react-scripts build",
     "client": "npm run build && npx serve -s build",
-    "server": "cd server && npm install && npm run prodStart"
+    "devClient": "react-scripts start",
+    "server": "cd server && npm install && npm run prodStart",
+    "devServer": "cd server && npm install && npm start"
   },
   "browserslist": {
     "production": [
